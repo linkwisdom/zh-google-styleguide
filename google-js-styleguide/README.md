@@ -1,41 +1,83 @@
-1. 变量声明用var
 
-> 变量声明务必用var
 
-2. 常量定义
+### 变量声明用var
 
-> 使用大写字母和下划线_
+- 变量声明务必用`var`
+- 在需要的地方声明
+- 不要给没有声明的变量赋值，否则会创建全局变量
 
-> 注释用@const
 
-3. 分号使用
+### 常量定义
 
-> 在赋值函数变量，数组，关联数组后不使用分号结束会引起许多问题
+- 使用大写字母和下划线_ 如 `_NAMES_LIKE_THIS`
+- 注释用 `@const`
 
-> 赋值，函数调用，返回值后务必用分号结束
 
-4. 函数嵌套
+### 分号使用
 
-> 函数嵌套很有用，但是要灵活掌握
+- 在赋值函数变量，数组，关联数组后不使用分号结束会引起许多问题
+- 赋值，函数调用，返回值后务必用分号结束
 
-5. 在非函数的块元素里面定义函数
+```js
+    // 1.
+    MyClass.prototype.myMethod = function() {
+      return 42;
+    }  // No semicolon here.
+    
+    (function() {
+      // Some initialization code wrapped in a function to create a scope for locals.
+    })();
+    
+    
+    var x = {
+      'i': 1,
+      'j': 2
+    }  // No semicolon here.
+    
+    [ffVersion, ieVersion][isIE]();
+    
+    var THINGS_TO_EAT = [apples, oysters, sprayOnCheese]  // No semicolon here.
+    
+    // 3. conditional execution a la bash
+    -1 == resultOfOperation() || die();
+```
 
-    if (x) {
-      function foo() {}
+- 以上代码会发生什么？
+
+
+### 函数嵌套
+
+- js 的作用域是基于函数，而不是基于语句块
+- 函数嵌套很有用，但是要灵活掌握
+
+- 在非函数的块元素里面定义函数，
+
+```js
+    if (false) {
+        function msg() {
+            alert(hoho);
+        }
     }
+    
+    msg();
+```
 
-6. 异常
+### 异常
 
-> 谨慎在代码中屏蔽错误，避免调试发现不到问题
+- 谨慎在代码中屏蔽错误，避免调试发现不到问题
 
-> 组件中的异常处理最好封装处理
+- 组件中的异常处理最好封装处理
 
-> 编写必要的自定义异常
+- 编写必要的自定义异常
 
-7. 使用兼容性好的标准特性
-8. 使用基本类型，避免使用封装类
-9. 避免使用多层原型，尽量使用属性拷贝的继承方式
-10. 为对象添加属性
+### 使用兼容性好的标准特性
+
+### 使用基本类型，避免使用封装类
+
+### 避免使用多层原型，尽量使用属性拷贝的继承方式
+
+### 为对象添加属性
+
     为对象添加属性可以在在对象定义的构造函数里面添加，或者通过原型对象添加属性。
     动态的为对象添加属性会降低JS的性能
 
@@ -57,15 +99,15 @@
     obj.foo = null;
 ```
 
-12. 闭包
+### 闭包
 
-> 闭包在JS中非常有用
+- 闭包在JS中非常有用
 
-> 避免闭包中绑定DOM事件
+- 避免闭包中绑定DOM事件
 
 ```js
     function foo(element, a, b) {
-      element.onclick = function() { /* uses a and b */ };
+        element.onclick = function() { /* uses a and b */ };
     }
 ```
 
@@ -83,16 +125,16 @@
     }
 ```
 
-1 3. eval
+###. eval
 
-> 建议只用于反序列化数据或RPC解析中使用
+- 建议只用于反序列化数据或RPC解析中使用
 
-> eval用户的输入内容是危险的
+- eval用户的输入内容是危险的
 
-1 4. with
-:不要使用
-:with能够立即改变代码的上下文
-:如果with包含的对象使用了 setter变量，可能会执行很多其它代码
+###  with
+- 不要使用
+- with能够立即改变代码的上下文
+- 如果with包含的对象使用了 setter变量，可能会执行很多其它代码
 
 ```js
 
@@ -104,26 +146,25 @@
 
 > Answer: anything. The local variable x could be clobbered by a property of foo and perhaps it even has a setter, in which case assigning 3 could cause lots of other code to execute. Don't use with.
 
-1 5. this
+###. this
 
-> Only in object constructors, methods, and in setting up closures
+- Only in object constructors, methods, and in setting up closures
 
-> this在很多情况下指向的是全局根对象(eval, 闭包内函数,DOM事件绑定，全局代码)
+- this在很多情况下指向的是全局根对象(eval, 闭包内函数, DOM事件绑定，全局代码)
 
-> apply和call能够改变this的指向
+- apply和call能够改变this的指向
 
 因为this很容易用错，因此在下面的场合中避免使用this
 
+- in constructors
 
-> in constructors
+- in methods of objects (including in the creation of closures)
 
-> in methods of objects (including in the creation of closures)
+###. for-in 遍历
 
-1 6. for-in 遍历
+- for-in遍历常常被错误用来遍历一个数组
 
-> for-in遍历常常被错误用来遍历一个数组
-
-> for-in遍历的是对象的属性，包括原型链中的值，但不包括数组中索引
+- for-in遍历的是对象的属性，包括原型链中的值，但不包括数组中索引
 
 
 ```js
@@ -152,16 +193,16 @@
 ```
 
 
-1 7. 关联数组 Associate Array
+### 关联数组 Associate Array
 
 
-> 不要用Array对象作为Map/Hash对象
+- 不要用Array对象作为Map/Hash对象
 
-1 8. 多行字符串文本
+### 多行字符串文本
 
-> 使用+连接字符串或者使用数组组织过长的字符串
+- 使用+连接字符串或者使用数组组织过长的字符串
 
-> 不要使用\组织多行，对JS的压缩后有不可控制的风险
+- 不要使用\组织多行，对JS的压缩后有不可控制的风险
 
 ```js
 
@@ -174,11 +215,12 @@
 
 ```
 
-1 9. Use Array and Object literals instead of Array and Object constructors.
 
-使用Array和Object列表形式创建对象，避免用构造函数创建对象。
+### Use Array and Object literals instead of Array and Object constructors.
 
-Array对象的构造函数的参数列表有歧义, 容易产生误用
+- 使用Array和Object列表形式创建对象，避免用构造函数创建对象。
+
+- Array对象的构造函数的参数列表有歧义, 容易产生误用
 
 ```js
     // Length is 3.
@@ -230,12 +272,12 @@ Array对象的构造函数的参数列表有歧义, 容易产生误用
     };
 ```
 
-2 0. 禁止修改内置对象的原型
+### 禁止修改内置对象的原型
 
 Modifying builtins like `Object.prototype` and `Array.prototype` are strictly forbidden. Modifying other builtins like `Function.prototype` is less dangerous but still leads to hard to debug issues in production and should be avoided.
 
 
-2 1. 禁止用IE下的条件注释
+### 禁止用IE下的条件注释
 
 Don't do this:
 
